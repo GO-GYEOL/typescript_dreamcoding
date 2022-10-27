@@ -4,6 +4,16 @@ import { BaseComponent, Component } from "./../component.js";
 type OnCloseListener = () => void;
 type OnSubmitListener = () => void;
 
+export interface MediaData{
+  readonly title:string;
+  readonly url:string;
+}
+
+export interface TextData{
+  readonly title:string;
+  readonly body:string;
+}
+
 export class InputDialog
   extends BaseComponent<HTMLElement>
   implements Composable
@@ -28,7 +38,6 @@ export class InputDialog
     submitBtn.onclick = () => {
       this.submitListener && this.submitListener();
     };
-    // 항상 이벤트는 내부적으로 처리하는 것이 아니라, 리스너를 주입받아서 등록된 리스너가 있다면 그것을 호출하는 방식으로 해야한다.
   }
 
   setOnCloseListener(listener: OnCloseListener) {
