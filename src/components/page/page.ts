@@ -16,6 +16,7 @@ interface SectionContainer extends Component, Composable {
   setOnDragStateListener(listener: OnDragStateListener<SectionContainer>): void;
   muteChildren(state: "mute" | "unmute"): void;
   getBoundingRect(): DOMRect;
+  onDropped():void;
 }
 
 type SectionContainerConstructor = {
@@ -47,6 +48,7 @@ export class PageItemComponent
     });
     this.element.addEventListener("dragend", (event: DragEvent) => {
       this.onDragEnd(event);
+      this.element.classList.remove('lifted');
     });
     this.element.addEventListener("dragenter", (event: DragEvent) => {
       this.onDragEnter(event);
@@ -58,15 +60,22 @@ export class PageItemComponent
 
   onDragStart(_: DragEvent) {
     this.notifyDragObservers("start");
+    this.element.classList.add('lifted'); // 스타일 주기 위해 만들었다. 드래그 될 때 해당 컴포넌트가 투명해지도록 만들기 위해.
   }
   onDragEnd(_: DragEvent) {
     this.notifyDragObservers("stop");
+    this.element.classList.remove('lifted');
   }
   onDragEnter(_: DragEvent) {
     this.notifyDragObservers("enter");
+    this.element.classList.add('drop-area');
   }
   onDragLeave(_: DragEvent) {
     this.notifyDragObservers("leave");
+    this.element.classList.remove('drop-area');
+  }
+  onDropped(): void {
+    this.element.classList.remove('drop-area');
   }
 
   notifyDragObservers(state: DragState) {
@@ -117,12 +126,9 @@ export class PageComponent
   }
   onDragOver(event: DragEvent) {
     event.preventDefault();
-    console.log("onDragOver");
   }
   onDrop(event: DragEvent) {
     event.preventDefault();
-    console.log("onDrop");
-
     if (!this.dropTarget) {
       return;
     }
@@ -135,6 +141,7 @@ export class PageComponent
         dropY < srcElement.y ? "beforebegin" : "afterend"
       );
     }
+    this.dropTarget.onDropped(); // drop이 될 경우 leave의 this.element.classList.remove('drop-area'); 가 이뤄지지 않는다. 그래서 onDropped()를 만들어줄 것이다.
   }
 
   addChild(section: Component) {
