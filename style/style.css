@@ -248,3 +248,11 @@ body {
   padding: 1em;
   color: var(--smokywhite);
 }
+
+
+/* ---- Drag and Drop ---- */
+
+.mute-children * {
+  /* mute-children 내부의 모든 태그들 을 의미함 */
+  pointer-events:none;
+}

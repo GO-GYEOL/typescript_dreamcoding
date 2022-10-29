@@ -26,6 +26,14 @@ class App {
     this.page = new PageComponent(PageItemComponent);
     this.page.attachTo(appRoot);
 
+    
+    this.page.addChild(new ImageComponent('Image Title','https://picsum.photos/800/400.jpg'))
+    this.page.addChild(new VideoComponent('Video Title', 'https://youtu.be/jmtglzQzGHw'))
+    this.page.addChild(new ToDoComponent('Todo TItle', 'TypeScript Course!'))
+    this.page.addChild(new NoteComponent("Note Title", 'Dont forget to code your dream'))
+
+
+
     this.bindElementToDialog<MediaSectionInput>(
       "#new-image",
       MediaSectionInput,
