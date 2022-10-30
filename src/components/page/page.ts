@@ -116,7 +116,7 @@ export class PageComponent
   private dragTarget?: SectionContainer;
 
   constructor(private pageItemConstructor: SectionContainerConstructor) {
-    super('<ul class="page">asd</ul>');
+    super('<ul class="page"></ul>');
     this.element.addEventListener("dragover", (event: DragEvent) => {
       this.onDragOver(event);
     });
